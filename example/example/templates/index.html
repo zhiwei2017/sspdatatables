@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    {% load static i18n %}
+    <link rel="shortcut icon" href="#">
+    <!-- Bootstrap Core CSS 3.3.7 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Block for template-specific css files -->
+    {% block extraCSS %}
+    {% endblock %}
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    
+
+</head>
+
+<body>
+        <!-- Main content -->
+        <div id="wrapper">
+                 
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h1 class="page-header">{{ title }}</h1>
+                    </div>
+                </div>
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+
+    <!-- Room for individual scripts -->
+    {% block scripts %}
+    {% endblock %}
+
+
+</body>
+</html>

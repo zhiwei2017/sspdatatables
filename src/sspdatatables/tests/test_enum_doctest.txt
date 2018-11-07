@@ -1,0 +1,49 @@
+This is a separate doctest file for the class TripleEnum in utils/enum.py
+
+>>> from utils.enum import TripleEnum
+>>> class MyLabeledEnum(TripleEnum):
+...     FOO1 = (1, 'BAR 1', 'LAR 1')
+...     FOO2 = (2, 'BAR 2', 'LAR 2')
+...     FOO3 = (3, 'BAR 3', 'LAR 3')
+
+>>> MyLabeledEnum.FOO1 is MyLabeledEnum.FOO1
+True
+>>> MyLabeledEnum.FOO1 == MyLabeledEnum.FOO1
+True
+>>> MyLabeledEnum.FOO1 is not MyLabeledEnum.FOO2
+True
+>>> MyLabeledEnum.FOO1 == MyLabeledEnum.FOO2
+False
+>>> MyLabeledEnum.FOO1.key
+1
+>>> MyLabeledEnum.FOO1.label
+'BAR 1'
+>>> MyLabeledEnum.FOO1.extra
+'LAR 1'
+>>> MyLabeledEnum.keys()
+(1, 2, 3)
+>>> MyLabeledEnum.labels()
+('BAR 1', 'BAR 2', 'BAR 3')
+>>> MyLabeledEnum.extras()
+('LAR 1', 'LAR 2', 'LAR 3')
+>>> MyLabeledEnum.from_key(1)
+<MyLabeledEnum.FOO1: (1, 'BAR 1', 'LAR 1')>
+>>> MyLabeledEnum.from_key(-1) is None
+True
+>>> MyLabeledEnum.from_label('BAR 1')
+<MyLabeledEnum.FOO1: (1, 'BAR 1', 'LAR 1')>
+>>> MyLabeledEnum.from_label('BAR 11') is None
+True
+>>> MyLabeledEnum.from_extra('LAR 1')
+<MyLabeledEnum.FOO1: (1, 'BAR 1', 'LAR 1')>
+>>> MyLabeledEnum.from_extra('LAR 11') is None
+True
+>>> str(MyLabeledEnum.FOO1)
+'1'
+>>> MyLabeledEnum.describe()
+Class:  MyLabeledEnum
+Key | Label | Extra
+------------------
+  1 | BAR 1 | LAR 1
+  2 | BAR 2 | LAR 2
+  3 | BAR 3 | LAR 3

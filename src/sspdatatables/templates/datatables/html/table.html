@@ -1,0 +1,34 @@
+{# the class of the table can be also changed later through js's functions 'addClass', 'removeClass' #}
+<table id="example{{index}}" width="100%" class="table table-striped table-hover table-condensed">
+    <thead>
+        {% block extraHeaderFront %}
+            {# block for some extra headers, which should be in front of the normal headers #}
+        {% endblock %}
+        {# display the header defined in the DataTables class #}
+        <tr>
+            {% for item in dt_structure %}
+                <th>{{item.header}}</th>
+            {% endfor %}
+        </tr>
+        {% block extraHeaderBack %}
+        {# block for some extra headers, which should be after the normal headers #}
+        {% endblock %}
+    </thead>
+    <tfoot id="example{{index}}_tfoot">
+        {% block extraFooterFront %}
+        {# block for some extra footers, which should be after the normal footers #}
+        {% endblock %}
+        <tr>
+            {% for item in dt_structure %}
+                {% if item.searchable %}
+                    <th id="{{prefex}}{{item.id}}">{{item.header}}</th>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% block extraFooterBack %}
+        {# block for some extra footers, which should be after the normal footers #}
+        {% endblock %}
+    </tfoot>
+</table>
