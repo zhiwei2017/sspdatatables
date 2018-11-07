@@ -12,7 +12,7 @@ with open(os.path.join('VERSION')) as version_file:
     version = version_file.read().strip()
 
 setup(
-    name='sspdatatables_pkg',
+    name='sspdatatables',
     version=version,
     author='Zhiwei Zhang',
     author_email='zhiwei2017@gmail.com',

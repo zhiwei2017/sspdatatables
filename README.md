@@ -39,28 +39,28 @@ sspdatatables
 |   datatables.py
 |   forms.py
 |
-└───utils
+|---utils
 |   |   __init__.py
 |   |   decorator.py
 |   |   enum.py
 |   |   data_type_ensure.py
 |
-└───templates
+|---templates
 |   |
-|   └───datatables
+|   |---datatables
 |   |   |
-|   |   └───html
+|   |   |---html
 |   |   |   table.html
 |   |   |
-|   |   └───js
+|   |   |---js
 |   |   |   footer.js
 |   |   |   general.js
 |   |
-└───templatetags
+|---templatetags
     |   __init__.py
     |   form_field.py
 |
-└───tests
+|---tests
     |    __init__.py
     |    test_data_type_ensure_doctest.txt
     |    test_enum_doctest.txt
@@ -71,10 +71,9 @@ sspdatatables
 
 ### Setup
 
-1. download the released file
-2. unzip the file, go to the zipped folder and run `python setup install`
-3. add `sspdatatables` in the `INSTALLED_APPS` in **settings.py**
-4. add `sspdatatables/templates/` in the `DIRS` of `TEMPLATES` in **settings.py**
+1. run `pip install sspdatatables`
+2. add `sspdatatables` in the `INSTALLED_APPS` in **settings.py**
+3. add `sspdatatables/templates/` in the `DIRS` of `TEMPLATES` in **settings.py**
 
 ### Tutorial
 
@@ -89,7 +88,7 @@ sspdatatablesExample
 |   manuals.py
 |   requirements.txt
 |
-└───example
+|---example
 |   |   __init__.py
 |   |   admin.py
 |   |   apps.py
@@ -98,15 +97,15 @@ sspdatatablesExample
 |   |   urls.py
 |   |   views.py
 |   |
-|   └───migrations
+|   |---migrations
 |   |   |   __init__.py
 |   |   |   0001_initial.py
 |   |
-|   └───templates
+|   |---templates
 |       |   index.html
 |       |   overview.html
 |
-└───sspdatatablesExample
+|---sspdatatablesExample
     |   __init__.py
     |   admin.py
     |   apps.py
@@ -115,7 +114,7 @@ sspdatatablesExample
     |   urls.py
     |   wsgi.py
     |
-    └───migrations
+    |---migrations
         |   __init__.py
 ```
 
