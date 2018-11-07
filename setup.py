@@ -19,7 +19,7 @@ setup(
     description='Django package serverside processing datatables',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url='https://bitbucket.org/KnightConan/sspdatatables/',
+    url='https://github.com/zhiwei2017/sspdatatables',
     packages=find_packages(source_path),
     package_dir={'': source_path},
     include_package_data=True,

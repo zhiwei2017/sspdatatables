@@ -419,7 +419,7 @@ from `sspdatatables`.Now the `overview.html` should be like:
 3. in the `block scripts` declare an instance of `DataTable` with the settings 
 you want (here I will provide some common used settings). The `overview.html` becomes:
 
-```html
+    ```html
     {% extends "index.html" %}
     
     {% load static %}
@@ -503,7 +503,7 @@ you want (here I will provide some common used settings). The `overview.html` be
     });
     </script>
     {% endblock %}
-```
+    ```
 
 You can read the documentation in `DataTable` website to know about the javascript settings.
 
