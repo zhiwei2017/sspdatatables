@@ -57,3 +57,15 @@ def generate_error_json_response(error_dict, error_response_context=None):
         }
     response.update(error_response_context)
     return JsonResponse(response)
+
+def dt_json_response(context):
+    """
+    render the context in a json response. It the context contains error messages,
+    render an error json response.
+
+    :param context: dict: json serializable dictionary
+    :return: JsonResponse
+    """
+    if "error" in context:
+        return generate_error_json_response(context)
+    return JsonResponse(context)

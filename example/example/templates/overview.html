@@ -15,6 +15,22 @@
 
 
 {% block scripts %}
+<!-- DataTables CSS -->
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
+
+<!-- DataTables Responsive CSS -->
+<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap4.min.css" rel="stylesheet"/>
+
+<!-- DataTables JavaScript -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
 {% include 'datatables/js/general.js' %}
 {% include 'datatables/js/footer.js' %}
 
@@ -25,10 +41,32 @@ function render_actions(data, type, row) {
     return content;
 }
 
+function apply_search(js_object) {
+    var that = js_object;
+
+    $(js_object.table().container()).on('click', 'tfoot #search', function(e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            var col_num= $(this).attr('id').match(/\d+/g);
+            that.columns( col_num )
+                .search( this.value )
+                .draw();
+        }
+    });
+    $(js_object.table().container()).on('change', 'tfoot select', function(e) {
+        e.preventDefault();
+        var col_num= $(this).attr('id').match(/\d+/g);
+        var search_val = $(this).val();
+        that.columns( col_num )
+            .search( search_val )
+            .draw();
+    });
+}
+
 /* here is the main function */
 $(document).ready(function() {
     // DataTable definition
-    var table = $('#example').DataTable({
+    var table = $('#{{sspdtable.id}}').DataTable({
         "scrollY": "400px",
         "scrollX": true,
         "scrollCollapse": true,
@@ -50,13 +88,13 @@ $(document).ready(function() {
             },
             "data": function ( d ) {
                 return $.extend( {}, d, {
-                    "total_cols": {{dt_structure|length}},
+                    "total_cols": {{sspdtable.frame|length}},
                 } );
             }
         },
         "columns": [
             // using django loop to define the stucture of the columns
-            {% for item in dt_structure %}
+            {% for item in sspdtable.frame %}
                 {
                     "data": {% if item.serializer_key %}'{{item.serializer_key}}'{% else %} null {% endif %}, render: function (data, type, row) {
                         {% if item.id == 'actions' %}
@@ -73,10 +111,10 @@ $(document).ready(function() {
         ],
     });
     // hide the global filter and the footer, since in this view we don't need the footer
-    $("#example_filter").hide();
+    $("#{{sspdtable.id}}_filter").hide();
 
     // single line without text wrapping
-    $("#example").addClass("nowrap");
+    $("#{{sspdtable.id}}").addClass("nowrap");
 
     // Apply the search
     apply_search(table);

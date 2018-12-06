@@ -1,13 +1,12 @@
 from django.shortcuts import render
-from django.http import JsonResponse
 from .datatables import BookDataTables
-from sspdatatables.utils.decorator import ensure_ajax
+from sspdatatables.utils.decorator import ensure_ajax, dt_json_response
 from collections import OrderedDict
 
 
 def overview(request):
     book_datatables = BookDataTables()
-    context = book_datatables.get_dt_elements()
+    context = book_datatables.get_table_frame()
     context.update({
         "title": "Books",
     })
@@ -20,4 +19,4 @@ def get_book_api(request):
     book_datatables = BookDataTables()
     result = book_datatables.process(pre_search_condition=pre_search_condition,
                                      **request.POST)
-    return JsonResponse(result)
+    return dt_json_response(result)

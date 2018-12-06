@@ -9,7 +9,7 @@ class BookDataTables(DataTables):
     class Meta:
         serializer = BookSerializer
         form = BookFieldSelectForm
-        structure = [
+        frame = [
             {
                 "id": "actions", "serializer_key": None,
                 "header": "Actions", "searchable": False,
@@ -42,4 +42,4 @@ class BookDataTables(DataTables):
                 "placeholder": "YYYY-MM-DD",
             },
         ]
-        col_triple_enum = BookEnum
+        mapping = BookEnum
