@@ -1,8 +1,7 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 import os
 
 
-source_path = 'src'
 # Load README as description of package
 with open('README.md') as readme_file:
     long_description = readme_file.read()
@@ -20,8 +19,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/KnightConan/sspdatatables',
-    packages=find_packages(source_path),
-    package_dir={'': source_path},
+    packages=["sspdatatables"],
     include_package_data=True,
     install_requires = [
         'pytz',
