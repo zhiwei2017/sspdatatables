@@ -1,0 +1,5 @@
+pytz
+Django
+djangorestframework
+sspdatatables
+django-countries

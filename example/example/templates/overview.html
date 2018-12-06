@@ -1,0 +1,85 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    {% include 'datatables/html/table.html' %}
+        {% csrf_token %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+{% include 'datatables/js/general.js' %}
+{% include 'datatables/js/footer.js' %}
+
+<script>
+function render_actions(data, type, row) {
+    var content = "";
+    content += '<a class="btn btn-warning btn-xs" href="#" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>';
+    return content;
+}
+
+/* here is the main function */
+$(document).ready(function() {
+    // DataTable definition
+    var table = $('#example').DataTable({
+        "scrollY": "400px",
+        "scrollX": true,
+        "scrollCollapse": true,
+        "order": [[ 1, "asc" ]],   // define the default ordering column and ordering format
+        "processing": true,        // Enable or disable the display of a 'processing' indicator when the table is being processed
+        "serverSide": true,        // important to use the server side processing
+        "deferRender": true,       // read the documentation in datatables website
+        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],    // length menu, read the documentation
+        "paging": true,
+        "pagingType": "full_numbers",
+        "ajax": {
+            "url": '{% url 'book_api' %}',
+            "type": "POST",
+            "headers": {
+                'X-CSRFToken': $('[name=csrfmiddlewaretoken]').val(),
+            },
+            "dataSrc":function (json) {
+                return json.data;
+            },
+            "data": function ( d ) {
+                return $.extend( {}, d, {
+                    "total_cols": {{dt_structure|length}},
+                } );
+            }
+        },
+        "columns": [
+            // using django loop to define the stucture of the columns
+            {% for item in dt_structure %}
+                {
+                    "data": {% if item.serializer_key %}'{{item.serializer_key}}'{% else %} null {% endif %}, render: function (data, type, row) {
+                        {% if item.id == 'actions' %}
+                            return render_actions(data, type, row);
+                        {% else %}
+                            return data;
+                        {% endif %}
+                    },
+
+                    "searchable": {% if item.searchable %} true {% else %} false {% endif %},
+                    "orderable": {% if item.orderable %} true {% else %} false {% endif %},
+                },
+            {% endfor %}
+        ],
+    });
+    // hide the global filter and the footer, since in this view we don't need the footer
+    $("#example_filter").hide();
+
+    // single line without text wrapping
+    $("#example").addClass("nowrap");
+
+    // Apply the search
+    apply_search(table);
+});
+</script>
+{% endblock %}

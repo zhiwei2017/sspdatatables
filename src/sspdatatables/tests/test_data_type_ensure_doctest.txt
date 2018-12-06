@@ -1,0 +1,17 @@
+This is a separate doctest file for the function ensure in utils/data_type_ensure.py
+
+>>> from utils.data_type_ensure import ensure
+>>> ensure(int, 1000, 0)
+1000
+>>> ensure(int, '1000', 0)
+1000
+>>> ensure(int, '1000', '0')
+Traceback (most recent call last):
+...
+ValueError: default_value must be the value in the given data type.
+>>> ensure(int, 1000, '0')
+Traceback (most recent call last):
+...
+ValueError: default_value must be the value in the given data type.
+>>> ensure(int, "jdkjf", 0)
+0
