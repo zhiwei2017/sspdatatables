@@ -1,7 +1,7 @@
-from sspdatatables.utils.enum import TripleEnum
+from sspdatatables.utils.enum import MappingEnum
 
 
-class BookEnum(TripleEnum):
+class BookEnum(MappingEnum):
     """
     class to define a mapping
     """

@@ -3,7 +3,7 @@ Abstract Class for using `DataTables <https://datatables.net/>`_ package with
 server side processing function in Django project.
 """
 from .utils.data_type_ensure import ensure
-from .utils.enum import TripleEnum
+from .utils.enum import MappingEnum
 from collections import OrderedDict, defaultdict
 from rest_framework.serializers import ModelSerializer
 from .forms import AbstractFilterForm
@@ -19,14 +19,15 @@ _error_msg = {
     "undefined_meta": "Class 'Meta' isn't defined.",
     "wrong_type_meta": "Class 'Meta' isn't defined as a nested class.",
     "missing_attr": "Variable(s) %r must be defined in Meta class.",
-    "none_attr": "{Variable(s)} %r can not be None.",
-    "wrong_data_type": "Variable/Parameter(s) '%s' must be %s.",
+    "none_attr": "Variable(s) %r can not be None.",
+    "wrong_data_type": "Variable '%s' must be %s.",
     "missing_k_in_frame": "Key(s) %r are missing",
     "none_form": "Variable 'form' can not be None, if filter_type is not input",
     "invalid_filter_k": "Invalid filter key.",
     "invalid_attr_in_query_dict": "Parameter 'query_dict' contains non-existent"
                                   " attribute.",
-    "unorderable_column": "The column [%d] is unorderable."
+    "unorderable_column": "The column [%d] is unorderable.",
+    "invalid_col_idx": "The given column index is invalid."
 }
 
 
@@ -136,27 +137,9 @@ class DataTablesMeta(type):
 
         # mapping must be a subclass of TripleEnum class
         mapping = getattr(_meta, "mapping")
-        if not issubclass(mapping, TripleEnum):
+        if not issubclass(mapping, MappingEnum):
             raise ValueError(_error_msg["wrong_data_type"]
                              % "mapping", "a subclass of TripleEnum.")
-        # force the user to define the mapping in a particular format
-        # TODO: use the named enum
-        for item in list(mapping):
-            if not isinstance(item.key, int):
-                
-                raise TypeError(
-                    _error_msg["wrong_data_type"] % "key", "int value")
-            elif not isinstance(item.label, str):
-                raise TypeError(
-                    _error_msg["wrong_data_type"] % "label", "str value")
-            if isinstance(item.extra, tuple) and len(item.extra) != 2:
-                raise TypeError(
-                    _error_msg["wrong_data_type"] % "extra",
-                    "a 2-element tuple or str value")
-            elif not isinstance(item.extra, str):
-                raise TypeError(
-                    _error_msg["wrong_data_type"] % "extra",
-                    "a 2-element tuple or str value")
 
         # the search_area must be one of the enumerations, it's optional
         if not hasattr(_meta, "search_area"):
@@ -268,8 +251,8 @@ class DataTables(metaclass=DataTablesMeta):
         for column_idx, search_value in query_dict["columns"]:
             # through the column index to get corresponding the enumeration item
             # from the class's mapping variable
-            enum_item = self.mapping.from_key(column_idx)
-            filter_obj = enum_item.extra
+            enum_item = next(iter(self.mapping.from_col_idx(column_idx)))
+            filter_obj = enum_item.filter_obj
             # if the filter_obj is a tuple and the length of the tuple is 2, we
             # take the first element of the tuple as the customized filter
             # function and the second element as the search value.
@@ -296,7 +279,10 @@ class DataTables(metaclass=DataTablesMeta):
           queryset's `order_by` function.
         """
         order_column = query_dict[ConvertMapping.order_by.name]
-        order_key = self.mapping.from_key(order_column).label
+        if not self.mapping.has_col_idx(order_column):
+            raise ValueError(_error_msg["invalid_col_idx"])
+        enum_item = next(iter(self.mapping.from_col_idx(order_column)))
+        order_key = enum_item.order_key
         order_key = query_dict[ConvertMapping.order_direction.name] + order_key
         return order_key
 
@@ -437,7 +423,7 @@ class DataTables(metaclass=DataTablesMeta):
         # dictionary to hold the search value for each column temporary
         search_value_dict = dict()
         # the first column number to iterate
-        starter = next(iter(self.mapping.keys()))
+        starter = next(iter(self.mapping.col_idxs()))
         # iterates every column to get the filter values and check if the column
         # used for ordering is really orderable.
         # The logic is :
