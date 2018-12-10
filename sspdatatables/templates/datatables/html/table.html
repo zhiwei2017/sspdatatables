@@ -1,9 +1,16 @@
 {# the class of the table can be also changed later through js's functions 'addClass', 'removeClass' #}
 <table id="{{sspdtable.id}}" width="100%" class="table table-striped table-hover table-condensed">
-    <thead>
+    <thead id="{{sspdtable.id}}_thead">
         {% block extraHeaderFront %}
             {# block for some extra headers, which should be in front of the normal headers #}
         {% endblock %}
+        {% if sspdtable.search_area == 1 %}
+            <tr>
+                {% for item in sspdtable.frame %}
+                    <th id="{{sspdtable.id}}_filter_{{item.id}}">{% if item.searchable %}{{item.header}}{% endif %}</th>
+                {% endfor %}
+            </tr>
+        {% endif %}
         {# display the header defined in the DataTables class #}
         <tr>
             {% for item in sspdtable.frame %}
@@ -18,11 +25,13 @@
         {% block extraFooterFront %}
             {# block for some extra footers, which should be after the normal footers #}
         {% endblock %}
-        <tr>
-            {% for item in sspdtable.frame %}
-                <th id="{{sspdtable.id}}_{{item.id}}">{% if item.searchable %}{{item.header}}{% endif %}</th>
-            {% endfor %}
-        </tr>
+        {% if sspdtable.search_area == 2 %}
+            <tr>
+                {% for item in sspdtable.frame %}
+                    <th id="{{sspdtable.id}}_filter_{{item.id}}">{% if item.searchable %}{{item.header}}{% endif %}</th>
+                {% endfor %}
+            </tr>
+        {% endif %}
         {% block extraFooterBack %}
             {# block for some extra footers, which should be after the normal footers #}
         {% endblock %}

@@ -32,35 +32,12 @@
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
 
 {% include 'datatables/js/general.js' %}
-{% include 'datatables/js/footer.js' %}
 
 <script>
 function render_actions(data, type, row) {
     var content = "";
     content += '<a class="btn btn-warning btn-xs" href="#" data-toggle="tooltip" title="Edit"><i class="fa fa-edit"></i></a>';
     return content;
-}
-
-function apply_search(js_object) {
-    var that = js_object;
-
-    $(js_object.table().container()).on('click', 'tfoot #search', function(e) {
-        if (e.which == 13) {
-            e.preventDefault();
-            var col_num= $(this).attr('id').match(/\d+/g);
-            that.columns( col_num )
-                .search( this.value )
-                .draw();
-        }
-    });
-    $(js_object.table().container()).on('change', 'tfoot select', function(e) {
-        e.preventDefault();
-        var col_num= $(this).attr('id').match(/\d+/g);
-        var search_val = $(this).val();
-        that.columns( col_num )
-            .search( search_val )
-            .draw();
-    });
 }
 
 /* here is the main function */
@@ -70,7 +47,7 @@ $(document).ready(function() {
         "scrollY": "400px",
         "scrollX": true,
         "scrollCollapse": true,
-        "order": [[ 1, "asc" ]],   // define the default ordering column and ordering format
+        "order": [[ 1, "asc" ]],   // define the default _ordering column and _ordering format
         "processing": true,        // Enable or disable the display of a 'processing' indicator when the table is being processed
         "serverSide": true,        // important to use the server side processing
         "deferRender": true,       // read the documentation in datatables website
@@ -111,10 +88,12 @@ $(document).ready(function() {
         ],
     });
     // hide the global filter and the footer, since in this view we don't need the footer
-    $("#{{sspdtable.id}}_filter").hide();
+    <!--$("#{{sspdtable.id}}_filter").hide();-->
 
     // single line without text wrapping
     $("#{{sspdtable.id}}").addClass("nowrap");
+
+    $("#{{sspdtable.id}}_filter").html('<button class="btn btn-outline-primary btn-xm" data-toggle="tooltip" title="erase" id="{{sspdtable.id}}_filter_erase_btn"><i class="fa fa-eraser"></i></button><button type="button" class="btn btn-outline-primary btn-xm" data-toggle="tooltip" title="search" id="{{sspdtable.id}}_filter_search_btn"><i class="fa fa-search"></i></button>');
 
     // Apply the search
     apply_search(table);

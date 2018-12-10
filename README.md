@@ -294,8 +294,8 @@ for it and define its internal Meta class's variables.
 At last, I will show you how to change the footer search field to *select* type.
 > ###### Notice:
 > * If your table has a complicated query and you want to customize the query 
-function, you can redefine the functions `get_query_dict`, `get_order_key`, 
-`filtering`, `slicing`, `filter_by_args` or `process` inside your defined 
+function, you can redefine the functions `_get_filter_dict`, `_get_order_key`, 
+`_filtering`, `_slicing`, `filter_by_args` or `process` inside your defined 
 subclass of `DataTables` as you need. In this case you need to read the source code first.
 
 ##### Step 5.
@@ -452,7 +452,7 @@ you want (here I will provide some common used settings). The `overview.html` be
             "scrollY": "400px",
             "scrollX": true,
             "scrollCollapse": true,
-            "order": [[ 1, "asc" ]],   // define the default ordering column and ordering format
+            "order": [[ 1, "asc" ]],   // define the default _ordering column and _ordering format
             "processing": true,        // Enable or disable the display of a 'processing' indicator when the table is being processed
             "serverSide": true,        // important to use the server side processing
             "deferRender": true,       // read the documentation in datatables website

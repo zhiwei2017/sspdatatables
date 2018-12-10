@@ -5,7 +5,7 @@ according to the value of 'fields' defined in Meta class
 from django.forms import forms
 
 
-class AbstractFooterForm(forms.Form):
+class AbstractFilterForm(forms.Form):
     """
     abstract django form, which can generate the ChoiceField dynamically.
     Aiming is to simplify the usage of the DataTables class and reducing
@@ -29,7 +29,7 @@ class AbstractFooterForm(forms.Form):
         """
         assert (isinstance(cls.Meta.fields, list) and len(cls.Meta.fields) and
                 all(isinstance(n, tuple) for n in cls.Meta.fields)), "'fields' must be a non-empty list of tuples."
-        return super(AbstractFooterForm, cls).__new__(cls)
+        return super(AbstractFilterForm, cls).__new__(cls)
 
     def __init__(self, *args, **kwargs):
         """
@@ -39,7 +39,7 @@ class AbstractFooterForm(forms.Form):
         :param args: list: arguments in order
         :param kwargs:: dict : keyword arguments
         """
-        super(AbstractFooterForm, self).__init__(*args, **kwargs)
+        super(AbstractFilterForm, self).__init__(*args, **kwargs)
         for field_name, field_type in self.Meta.fields:
             self.fields[field_name] = field_type(required=False, choices=getattr(self, 'get_'+field_name+'_choices'))
 
