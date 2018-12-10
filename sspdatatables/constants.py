@@ -1,5 +1,5 @@
 from enum import Enum
-from named_enum import NamedEnum
+from .utils.enum import ConvertMappingEnum
 
 
 class SearchArea(Enum):
@@ -10,17 +10,6 @@ class SearchArea(Enum):
     Header = 1  # means the filters are in the header of the table
     Footer = 2  # means the filters are in the footer of the table
     Customize = 3  # means the filters are in a customized container
-
-
-class ConvertMappingEnum(NamedEnum):
-    """
-    Customized Enum class for defining the conversion mapping for extracting
-    and converting necessary parameter from request's QueryDict.
-
-    The syntax defines the keys in the QueryDict, the default_val is the
-    default value for the conversion
-    """
-    _field_names_ = ['syntax', 'default_val']
 
 
 class ConvertMapping(ConvertMappingEnum):
